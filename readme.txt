@@ -27,3 +27,6 @@ spyder
 # -------------------------------
 # Start Streamlit App:
 streamlit run main.py
+
+
+some text 
