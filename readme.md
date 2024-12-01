@@ -30,8 +30,7 @@ The outcome of our analysis can be viewed [here](https://aseproject-9hercgjdmeyp
 
 ---
 
-<a name="setup"/>
-## Setup
+## <a name="setup"/>Setup
 
 ### Prerequisites
 install Python 3.10+ on your system, restart system
@@ -55,8 +54,7 @@ install Python 3.10+ on your system, restart system
 - Start Streamlit App: streamlit run main.py
 
 # -------------------------------
-<a name="code-documentation"/>
-## Code Documentation
+## <a name="code-documentation"/>Code Documentation
 
 ### Project Structure
 . ├── src/ │ ├── main.py # Entry point of the application │ ├── utils.py # Helper functions │ ├── config.py # Configuration setup ├── docs/ # Documentation files ├── tests/ # Unit and integration tests └── README.txt # Project documentation
@@ -68,8 +66,7 @@ install Python 3.10+ on your system, restart system
 
 
 # -------------------------------
-<a name="interpretation"/>
-## Interpretation
+## <a name="interpretation"/>Interpretation
 
 ### Usage Instructions
 - Describe how to use your project and interpret its output. Provide examples:
