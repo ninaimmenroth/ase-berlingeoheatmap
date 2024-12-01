@@ -1,6 +1,6 @@
 
-currentWorkingDirectory = "C:\\(...)\\project1"
-#currentWorkingDirectory = "/mount/src/berlingeoheatmap1/"
+#currentWorkingDirectory = "C:\\(...)\\project1"
+currentWorkingDirectory = "/Users/ninaimmenroth/Data Science/ASE project/ASE_Project"
 
 # -----------------------------------------------------------------------------
 import os
@@ -18,14 +18,17 @@ from config                          import pdict
 def main():
     """Main: Generation of Streamlit App for visualizing electric charging stations & residents in Berlin"""
 
-    df_geodat_plz   = #
+    df_geodat_plz   = pd.read_csv(pdict["file_geodat_plz"], sep=";", decimal=",")
     
-    df_lstat        = #
-    df_lstat2       = #
-    gdf_lstat3      = #
+    df_lstat        = pd.read_csv(pdict["file_lstations"], sep=";", decimal=",")
+    df_lstat2       = m1.preprop_lstat(df_lstat, df_geodat_plz, pdict)
+    gdf_lstat3      = m1.count_plz_occurrences(df_lstat2)
     
-    df_residents    = #
-    gdf_residents2  = #
+    df_residents    = pd.read_csv(pdict["file_residents"], sep=",")
+    gdf_residents2  = m1.preprop_resid(df_residents, df_geodat_plz, pdict)
+
+    m1.make_streamlit_electric_Charging_resid(gdf_lstat3, gdf_residents2)
+
     
 # -----------------------------------------------------------------------------------------------------------------------
 
