@@ -35,8 +35,7 @@ The outcome of our analysis can be viewed [here](https://aseproject-9hercgjdmeyp
 ### Prerequisites
 install Python 3.10+ on your system, restart system
 
-
-# -------------------------------
+---
 ### Installation:
 - Clone reposetory
 - python -m venv .venv
@@ -45,35 +44,42 @@ install Python 3.10+ on your system, restart system
 - pip install -r requirements.txt
 - pip install spyder (or use vscode)
 
-
-# -------------------------------
+---
 ### Launch:
 
 - .venv\Scripts\activate.bat (Windows)
 - source .venv/bin/activate (MacOS, Linux)
 - Start Streamlit App: streamlit run main.py
 
-# -------------------------------
+---
 ## <a name="code-documentation"/>Code Documentation
 
 ### Project Structure
-. ├── src/ │ ├── main.py # Entry point of the application │ ├── utils.py # Helper functions │ ├── config.py # Configuration setup ├── docs/ # Documentation files ├── tests/ # Unit and integration tests └── README.txt # Project documentation
+ase-berlingeoheatmap/ 
+├── data/ # Contains datasets used for analysis 
+│ ├── plz_einwohner.csv # Population data per ZIP code 
+│ └── charging_stations/ # Charging station data 
+├── core/ # Source code for the project 
+│ ├── methods.py # Methods to transform the data and generate heatmaps 
+│ └── HelperTools.py # Helper functions 
+├── notebooks/ # Jupyter Notebooks for analysis 
+│ └── berlin_analysis.ipynb # Analysis notebook 
+├── config.py # Configuration settings for the project
+├── main.py # Main script to launch the application
+├── requirements.txt # Python dependencies 
+└── README.md # Project documentation
 
 ### Key Functions/Modules
 - `main.py`: The main script to launch the application.
 - `core/methods.py`: Contains helper functions such as data processing and validation.
 - `config.py`: Handles configuration settings for the project.
 
-
-# -------------------------------
+---
 ## <a name="interpretation"/>Interpretation
 
 ### Usage Instructions
-- Describe how to use your project and interpret its output. Provide examples:
-- **Input:** What kind of data or parameters should be given.
-- **Output:** What results to expect.
+The app shows two maps of Berlin, one highlighting the amounts of electric charging stations and one the amounts of inhabitants for each ZIP code. You can switch from one map to the other using the radio buttons under "Select Layer".
 
-### Examples
-#### Input Example:
+### Results
 
 
