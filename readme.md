@@ -55,19 +55,19 @@ install Python 3.10+ on your system, restart system
 ## <a name="code-documentation"/>Code Documentation
 
 ### Project Structure
-ase-berlingeoheatmap/ 
-├── data/ # Contains datasets used for analysis 
-│ ├── plz_einwohner.csv # Population data per ZIP code 
-│ └── charging_stations/ # Charging station data 
-├── core/ # Source code for the project 
-│ ├── methods.py # Methods to transform the data and generate heatmaps 
-│ └── HelperTools.py # Helper functions 
-├── notebooks/ # Jupyter Notebooks for analysis 
-│ └── berlin_analysis.ipynb # Analysis notebook 
-├── config.py # Configuration settings for the project
-├── main.py # Main script to launch the application
-├── requirements.txt # Python dependencies 
-└── README.md # Project documentation
+ase-berlingeoheatmap/  
+├── data/ # Contains datasets used for analysis  
+│ ├── plz_einwohner.csv # Population data per ZIP code  
+│ └── charging_stations/ # Charging station data  
+├── core/ # Source code for the project  
+│ ├── methods.py # Methods to transform the data and generate heatmaps  
+│ └── HelperTools.py # Helper functions  
+├── notebooks/ # Jupyter Notebooks for analysis  
+│ └── berlin_analysis.ipynb # Analysis notebook  
+├── config.py # Configuration settings for the project  
+├── main.py # Main script to launch the application  
+├── requirements.txt # Python dependencies  
+└── README.md # Project documentation  
 
 ### Key Functions/Modules
 - `main.py`: The main script to launch the application.
