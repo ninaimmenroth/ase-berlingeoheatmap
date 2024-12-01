@@ -1,6 +1,6 @@
 
-#currentWorkingDirectory = "C:\\(...)\\project1"
-currentWorkingDirectory = "/Users/ninaimmenroth/Data Science/ASE project/ASE_Project"
+currentWorkingDirectory = "."
+#currentWorkingDirectory = "/Users/ninaimmenroth/Data Science/ASE project/ASE_Project"
 
 # -----------------------------------------------------------------------------
 import os
