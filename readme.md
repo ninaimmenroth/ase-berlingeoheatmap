@@ -4,7 +4,23 @@ Electric mobility plays a crucial role in reducing greenhouse gas emissions. In 
 
 In general, areas with high population density and a low number of charging stations show a greater demand for additional infrastructure. Conversely, regions with a high proportion of single-family homes typically have lower demand, as homeowners often install private chargers on their properties. Unfortunately, comprehensive and freely available data on housing types is either unavailable or only partially accessible. As a result, this analysis will focus solely on population figures and the number of existing charging stations.
 
-## Data Sources
+## Team members
+1. Azimy Zabihullah, 
+2. Immenroth Nina, 907261
+3. Khan Muhammad Kamran, 106089
+4. Muzaffar Kiran, 
+
+## Table of Contents
+
+1. [Data Sources](#datasources)
+2. [Final Result](#result)
+3. [Setup](#setup)
+4. [Code Documentation](#code-documentation)
+5. [Interpretation](#interpretation)
+
+---
+
+## <a name="datasources">Data Sources</a>
 ### Charging Station Infrastructure by Postal Code
 
 [Federal Network Agency - E-Mobility](https://www.bundesnetzagentur.de/DE/Fachthemen/ElektrizitaetundGas/E-Mobilitaet/start.html)
@@ -17,20 +33,12 @@ Charging station list (CSV, 11 MB)
 [Population Data by ZIP Code](https://www.suche-postleitzahl.org/downloads)
 plz_einwohner.csv
 
-## Final Result
+## <a name="result">Final Result</a>
 The outcome of our analysis can be viewed [here](https://aseproject-9hercgjdmeyphdljtnqpm6.streamlit.app/).
 
 ---
 
-## Table of Contents
-
-1. [Setup](#setup)
-2. [Code Documentation](#code-documentation)
-3. [Interpretation](#interpretation)
-
----
-
-## <a name="setup"/>Setup
+## <a name="setup">Setup</a>
 
 ### Prerequisites
 install Python 3.10+ on your system, restart system
@@ -52,7 +60,7 @@ install Python 3.10+ on your system, restart system
 - Start Streamlit App: streamlit run main.py
 
 ---
-## <a name="code-documentation"/>Code Documentation
+## <a name="code-documentation">Code Documentation</a>
 
 ### Project Structure
 ase-berlingeoheatmap/  
@@ -62,8 +70,6 @@ ase-berlingeoheatmap/
 ├── core/ # Source code for the project  
 │ ├── methods.py # Methods to transform the data and generate heatmaps  
 │ └── HelperTools.py # Helper functions  
-├── notebooks/ # Jupyter Notebooks for analysis  
-│ └── berlin_analysis.ipynb # Analysis notebook  
 ├── config.py # Configuration settings for the project  
 ├── main.py # Main script to launch the application  
 ├── requirements.txt # Python dependencies  
@@ -75,7 +81,7 @@ ase-berlingeoheatmap/
 - `config.py`: Handles configuration settings for the project.
 
 ---
-## <a name="interpretation"/>Interpretation
+## <a name="interpretation">Interpretation</a>
 
 ### Usage Instructions
 The app shows two maps of Berlin, one highlighting the amounts of electric charging stations and one the amounts of inhabitants for each ZIP code. You can switch from one map to the other using the radio buttons under "Select Layer".
