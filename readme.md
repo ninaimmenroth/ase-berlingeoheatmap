@@ -36,7 +36,7 @@ plz_einwohner.csv
 
 ---
 ## <a name="result">Final Result</a>
-The outcome of our analysis can be viewed [here](https://aseproject-9hercgjdmeyphdljtnqpm6.streamlit.app/).
+The streamlit app for our analysis can be viewed [here](https://aseproject-9hercgjdmeyphdljtnqpm6.streamlit.app/).
 
 ---
 ## <a name="setup">Setup</a>
