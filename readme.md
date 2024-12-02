@@ -25,12 +25,13 @@ In general, areas with high population density and a low number of charging stat
 
 [Federal Network Agency - E-Mobility](https://www.bundesnetzagentur.de/DE/Fachthemen/ElektrizitaetundGas/E-Mobilitaet/start.html)
 
-Charging station list (XLSX, 8 MB)
-Charging station list (CSV, 11 MB)
+Charging station list:  
+Ladesaeulenregister.xlsx (XLSX, 8 MB)  
+Ladesaeulenregister.csv (CSV, 11 MB)
 
 ### Population by Postal Code
 
-[Population Data by ZIP Code](https://www.suche-postleitzahl.org/downloads)
+[Population Data by ZIP Code](https://www.suche-postleitzahl.org/downloads)  
 plz_einwohner.csv
 
 ---
@@ -76,7 +77,7 @@ ase-berlingeoheatmap/
 └── README.md # Project documentation  
 
 ### Key Functions/Modules
-- `main.py`: The main script to launch the application.
+- `main.py`: The main script to launch the application and execute functions from methods.py with the correct data.
 - `core/methods.py`: Contains helper functions such as data processing and creation of the streamlit app.
     - preprop_lstat(dfr, dfg, pdict): 
         - Preprocesses the dataframe from Ladesaeulenregister.csv and adds geographical information. 
