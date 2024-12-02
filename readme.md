@@ -46,7 +46,7 @@ install Python 3.10+ on your system, restart system
 
 ---
 ### Installation:
-- Clone reposetory
+- Clone repository
 - python -m venv .venv
 - .venv\Scripts\activate.bat (Windows)
 - source .venv/bin/activate (MacOS, Linux)
@@ -65,16 +65,16 @@ install Python 3.10+ on your system, restart system
 
 ### Project Structure
 ase-berlingeoheatmap/  
-├── data/ # Contains datasets used for analysis  
-│ ├── plz_einwohner.csv # Population data per ZIP code  
-│ └── charging_stations/ # Charging station data  
-├── core/ # Source code for the project  
-│ ├── methods.py # Methods to transform the data and generate heatmaps  
-│ └── HelperTools.py # Helper functions  
-├── config.py # Configuration settings for the project  
-├── main.py # Main script to launch the application  
-├── requirements.txt # Python dependencies  
-└── README.md # Project documentation  
+├── data/                       --> Contains datasets used for analysis  
+│ ├── plz_einwohner.csv         --> Population data per ZIP code  
+│ └── Ladesaeulenregister.csv   --> Charging station data  
+├── core/                       --> Source code for the project  
+│ ├── methods.py                --> Methods to transform the data and generate heatmaps  
+│ └── HelperTools.py            --> Helper functions  
+├── config.py                   --> Configuration settings for the project  
+├── main.py                     --> Main script to launch the application  
+├── requirements.txt            --> Python dependencies  
+└── README.md                   --> Project documentation  
 
 ### Key Functions/Modules
 - `main.py`: The main script to launch the application and execute functions from methods.py with the correct data.
