@@ -8,7 +8,7 @@ In general, areas with high population density and a low number of charging stat
 1. Azimy Zabihullah, 945106
 2. Immenroth Nina, 907261
 3. Khan Muhammad Kamran, 106089
-4. Muzaffar Kiran, 
+4. Muzaffar Kiran, ?
 
 ---
 ## Table of Contents
@@ -27,7 +27,8 @@ In general, areas with high population density and a low number of charging stat
 
 Charging station list:  
 Ladesaeulenregister.xlsx (XLSX, 8 MB)  
-Ladesaeulenregister.csv (CSV, 11 MB)
+Ladesaeulenregister.csv (CSV, 11 MB)  
+(Here the first rows of the csv-file were deleted as they were not containing any important information.)
 
 ### Population by Postal Code
 
