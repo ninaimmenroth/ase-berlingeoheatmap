@@ -10,48 +10,93 @@ from branca.colormap import LinearColormap
 
 
 
-def sort_by_plz_add_geometry(dfr, dfg, pdict): 
-    dframe                  = dfr.copy()
-    df_geo                  = dfg.copy()
+def sort_by_plz_add_geometry(dfr, dfg, pdict):
+    """
+    Sorts a dataframe by postal codes (PLZ), merges it with geographical data, and 
+    converts it into a GeoDataFrame with proper geometry.
     
-    sorted_df               = dframe\
+    Args:
+        dfr (pd.DataFrame): Main dataframe with data to process.
+        dfg (pd.DataFrame): Dataframe containing geographical information.
+        pdict (dict): Dictionary containing keys for column mapping (e.g., geocode column).
+    
+    Returns:
+        gpd.GeoDataFrame: A GeoDataFrame with sorted and geometry-enriched data.
+    """
+    # Make copies of input dataframes to ensure the originals are not modified
+    dframe = dfr.copy()
+    df_geo = dfg.copy()
+
+    # Sort the dataframe by 'PLZ' (postal code), reset the index, and ensure order consistency
+    sorted_df = dframe\
         .sort_values(by='PLZ')\
         .reset_index(drop=True)\
         .sort_index()
-        
-    sorted_df2              = sorted_df.merge(df_geo, on=pdict["geocode"], how ='left')
-    sorted_df3              = sorted_df2.dropna(subset=['geometry'])
-    
-    sorted_df3['geometry']  = gpd.GeoSeries.from_wkt(sorted_df3['geometry'])
-    ret                     = gpd.GeoDataFrame(sorted_df3, geometry='geometry')
-    
+
+    # Merge the sorted dataframe with geographical data on the key defined in 'pdict["geocode"]'
+    # This adds geographical data (like coordinates or polygons) to the dataframe
+    sorted_df2 = sorted_df.merge(df_geo, on=pdict["geocode"], how='left')
+
+    # Drop rows where the 'geometry' column is missing, as these rows lack valid geographical data
+    sorted_df3 = sorted_df2.dropna(subset=['geometry'])
+
+    # Convert the 'geometry' column (stored as WKT strings) into GeoSeries objects
+    sorted_df3['geometry'] = gpd.GeoSeries.from_wkt(sorted_df3['geometry'])
+
+    # Convert the dataframe into a GeoDataFrame with the 'geometry' column as its geometry field
+    ret = gpd.GeoDataFrame(sorted_df3, geometry='geometry')
+
+    # Return the resulting GeoDataFrame
     return ret
+
 
 # -----------------------------------------------------------------------------
 @ht.timer
 def preprop_lstat(dfr, dfg, pdict):
-    """Preprocessing dataframe from Ladesaeulenregister.csv"""
-    dframe                  = dfr.copy()
-    df_geo                  = dfg.copy()
+    """
+    Preprocessing dataframe from Ladesaeulenregister.csv
     
-    dframe2               	= dframe.loc[:,['Postleitzahl', 'Bundesland', 'Breitengrad', 'Längengrad', 'Nennleistung Ladeeinrichtung [kW]']]
-    dframe2.rename(columns  = {"Nennleistung Ladeeinrichtung [kW]":"KW", "Postleitzahl": "PLZ"}, inplace = True)
-
-    # Convert to string
-    dframe2['Breitengrad']  = dframe2['Breitengrad'].astype(str)
-    dframe2['Längengrad']   = dframe2['Längengrad'].astype(str)
-
-    # Now replace the commas with periods
-    dframe2['Breitengrad']  = dframe2['Breitengrad'].str.replace(',', '.')
-    dframe2['Längengrad']   = dframe2['Längengrad'].str.replace(',', '.')
-
-    dframe3                 = dframe2[(dframe2["Bundesland"] == 'Berlin') & 
-                                            (dframe2["PLZ"] > 10115) &  
-                                            (dframe2["PLZ"] < 14200)]
+    Args:
+        dfr (pd.DataFrame): Main dataframe to preprocess.
+        dfg (pd.DataFrame): Dataframe containing geographical information.
+        pdict (dict): Dictionary to assist in data processing (likely for mappings).
     
+    Returns:
+        pd.DataFrame: Processed dataframe with applied filters and added geometry.
+    """
+    # Make copies of input dataframes to avoid modifying original data
+    dframe = dfr.copy()
+    df_geo = dfg.copy()
+
+    # Select relevant columns and rename them for clarity and brevity
+    dframe2 = dframe.loc[:, ['Postleitzahl', 'Bundesland', 'Breitengrad', 
+                             'Längengrad', 'Nennleistung Ladeeinrichtung [kW]']]
+    dframe2.rename(columns={"Nennleistung Ladeeinrichtung [kW]": "KW", 
+                            "Postleitzahl": "PLZ"}, inplace=True)
+
+    # Convert latitude and longitude to string type (preparing for text-based operations)
+    dframe2['Breitengrad'] = dframe2['Breitengrad'].astype(str)
+    dframe2['Längengrad'] = dframe2['Längengrad'].astype(str)
+
+    # Replace commas with periods in latitude and longitude (converting to proper decimal format)
+    dframe2['Breitengrad'] = dframe2['Breitengrad'].str.replace(',', '.')
+    dframe2['Längengrad'] = dframe2['Längengrad'].str.replace(',', '.')
+
+    # Apply filters:
+    # - Only rows where the Bundesland (state) is "Berlin".
+    # - Postal codes (PLZ) are within a specific range: 10115 < PLZ < 14200.
+    dframe3 = dframe2[(dframe2["Bundesland"] == 'Berlin') & 
+                      (dframe2["PLZ"] > 10115) &  
+                      (dframe2["PLZ"] < 14200)]
+
+    # Call an external function `sort_by_plz_add_geometry` to:
+    # - Sort the filtered dataframe by PLZ.
+    # - Integrate additional geometry data from `df_geo` based on mapping logic in `pdict`.
     ret = sort_by_plz_add_geometry(dframe3, df_geo, pdict)
-    
+
+    # Return the processed dataframe.
     return ret
+
     
 
 # -----------------------------------------------------------------------------
@@ -137,73 +182,87 @@ def preprop_resid(dfr, dfg, pdict):
 # -----------------------------------------------------------------------------
 @ht.timer
 def make_streamlit_electric_Charging_resid(dfr1, dfr2):
-    """Makes Streamlit App with Heatmap of Electric Charging Stations and Residents"""
+    """
+    Creates a Streamlit app that displays heatmaps of electric charging stations 
+    and resident density by postal code (PLZ) on an interactive map.
     
+    Args:
+        dfr1 (pd.DataFrame): DataFrame containing data for electric charging stations by PLZ.
+            Columns include 'PLZ', 'Number' (number of charging stations), and 'geometry' (spatial data).
+        dfr2 (pd.DataFrame): DataFrame containing data for resident numbers by PLZ.
+            Columns include 'PLZ', 'Einwohner' (number of residents), and 'geometry' (spatial data).
+    
+    Returns:
+        None. The function generates and displays an interactive Streamlit app.
+    """
+    
+    # Create copies of the input DataFrames to avoid modifying the original data
     dframe1 = dfr1.copy()
     dframe2 = dfr2.copy()
 
-
-    # Streamlit app
+    # Initialize Streamlit app title
     st.title('Heatmaps: Electric Charging Stations and Residents')
 
-    # Create a radio button for layer selection
-    # layer_selection = st.radio("Select Layer", ("Number of Residents per PLZ (Postal code)", "Number of Charging Stations per PLZ (Postal code)"))
-
+    # Add a radio button to allow users to select which dataset (layer) to visualize on the map
+    # Options: Residents or Charging Stations
     layer_selection = st.radio("Select Layer", ("Residents", "Charging_Stations"))
 
-    # Create a Folium map
+    # Create an interactive Folium map centered on Berlin with an initial zoom level of 10
     m = folium.Map(location=[52.52, 13.40], zoom_start=10)
 
     if layer_selection == "Residents":
+        # If the user selects "Residents," display a heatmap of resident density
         
-        # Create a color map for Residents
-        color_map = LinearColormap(colors=['yellow', 'red'], vmin=dframe2['Einwohner'].min(), vmax=dframe2['Einwohner'].max())
+        # Create a linear color map for the number of residents
+        # Colors range from yellow (low density) to red (high density)
+        color_map = LinearColormap(
+            colors=['yellow', 'red'], 
+            vmin=dframe2['Einwohner'].min(), 
+            vmax=dframe2['Einwohner'].max()
+        )
 
-        # Add polygons to the map for Residents
+        # Add GeoJSON polygons to the map for each postal code area, styled based on resident density
         for idx, row in dframe2.iterrows():
             folium.GeoJson(
-                row['geometry'],
+                row['geometry'],  # Spatial data for the postal code
                 style_function=lambda x, color=color_map(row['Einwohner']): {
-                    'fillColor': color,
-                    'color': 'black',
-                    'weight': 1,
-                    'fillOpacity': 0.7
+                    'fillColor': color,  # Color based on resident density
+                    'color': 'black',   # Border color for the polygon
+                    'weight': 1,        # Border thickness
+                    'fillOpacity': 0.7  # Transparency level of the fill color
                 },
-                tooltip=f"PLZ: {row['PLZ']}, Einwohner: {row['Einwohner']}"
+                tooltip=f"PLZ: {row['PLZ']}, Einwohner: {row['Einwohner']}"  # Display PLZ and number of residents on hover
             ).add_to(m)
-        
-        # Display the dataframe for Residents
-        # st.subheader('Residents Data')
-        # st.dataframe(gdf_residents2)
 
     else:
-        # Create a color map for Numbers
+        # If the user selects "Charging_Stations," display a heatmap of charging station density
+        
+        # Create a linear color map for the number of charging stations
+        # Colors range from yellow (low density) to red (high density)
+        color_map = LinearColormap(
+            colors=['yellow', 'red'], 
+            vmin=dframe1['Number'].min(), 
+            vmax=dframe1['Number'].max()
+        )
 
-        color_map = LinearColormap(colors=['yellow', 'red'], vmin=dframe1['Number'].min(), vmax=dframe1['Number'].max())
-
-    # Add polygons to the map for Numbers
+        # Add GeoJSON polygons to the map for each postal code area, styled based on charging station density
         for idx, row in dframe1.iterrows():
             folium.GeoJson(
-                row['geometry'],
+                row['geometry'],  # Spatial data for the postal code
                 style_function=lambda x, color=color_map(row['Number']): {
-                    'fillColor': color,
-                    'color': 'black',
-                    'weight': 1,
-                    'fillOpacity': 0.7
+                    'fillColor': color,  # Color based on charging station density
+                    'color': 'black',   # Border color for the polygon
+                    'weight': 1,        # Border thickness
+                    'fillOpacity': 0.7  # Transparency level of the fill color
                 },
-                tooltip=f"PLZ: {row['PLZ']}, Number: {row['Number']}"
+                tooltip=f"PLZ: {row['PLZ']}, Number: {row['Number']}"  # Display PLZ and number of charging stations on hover
             ).add_to(m)
 
-        # Display the dataframe for Numbers
-        # st.subheader('Numbers Data')
-        # st.dataframe(gdf_lstat3)
-
-    # Add color map to the map
+    # Add the color map legend to the Folium map
     color_map.add_to(m)
-    
+
+    # Render the Folium map within the Streamlit app
     folium_static(m, width=800, height=600)
-    
-    
 
 
 
